@@ -59,7 +59,7 @@ int timeslot_signal_init(uv_loop_t* timeslot_loop)
 
   // signal init
   uv_signal_init(timeslot_loop, &timeslot_signal);
-  uv_signal_start(&timeslot_signal, on_timeslot_com, SIGUSR1);
+  uv_signal_start(&timeslot_signal, on_timeslot_com, SIGABRT);
   return 1;
 }
 

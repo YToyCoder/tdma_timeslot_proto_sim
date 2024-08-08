@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
   init_config.tr_tb = &tr_tb;
   printf("init timeslot table\n");
   timeslot_tb_init(&init_config);
-  show_timeslot_tb();
+  // show_timeslot_tb();
 
   // uv loop init
   uv_loop_t* loop = malloc(sizeof(uv_loop_t));

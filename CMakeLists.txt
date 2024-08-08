@@ -17,6 +17,13 @@ target_sources(timeslot_sm PRIVATE
   src/com/data_channel.c
 )
 
+
+if (NOT DEFINED ENV{LIBUV_HOME})
+  message(FATAL_ERROR "LIBUV_HOME not set")
+endif()
+
+target_link_directories(timeslot_sm PRIVATE $ENV{LIBUV_HOME})
+target_include_directories(timeslot_sm PRIVATE src "$ENV{LIBUV_HOME}/include")
+message($ENV{LIBUV_HOME}/include)
 target_link_libraries(timeslot_sm PRIVATE uv)
 
-target_include_directories(timeslot_sm PRIVATE src)

@@ -125,6 +125,7 @@ void tr_tb_generate_in_mmb(tr_tb_t* tr_tb, mmb_arr_t* mmb_arr)
   int mmb_arr_len = utarray_len(mmb_arr);
   for (int i = 0; i < mmb_arr_len - 1; i++) {
     tr_tb_node_t* tr_list = (tr_tb_node_t*) malloc(sizeof(tr_tb_node_t));
+    tr_list_init(&tr_list->tr_list);
     __tr_tb_generate_list(tr_list, mmb_arr, used_mark_tb, 0, i + 1);
     proto_list_insert_after(&tr_tb->tr_l_head, &tr_list->l);
   }
@@ -153,6 +154,11 @@ int generate_tr_tb(int netScale, tr_tb_t* tr_tb)
   int generate_scale = netScale + netScale % 2;
   if (generate_scale == 2) {
     tr_tb_node_t* tr_tb_node = (tr_tb_node_t*) malloc(sizeof(tr_tb_node_t));
+    if (tr_tb_node == NULL)
+    {
+      return 0;
+    }
+
     tr_list_init(&tr_tb_node->tr_list);
     insert_tr(&tr_tb_node->tr_list, 0, 1);
     proto_list_insert_after(&tr_tb->tr_l_head, & tr_tb_node->l);
