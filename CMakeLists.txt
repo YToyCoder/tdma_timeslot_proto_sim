@@ -15,8 +15,10 @@ target_sources(timeslot_sm PRIVATE
   src/timeslot/timeslot_tb.c
   src/timeslot/tr_tb.c
   src/com/data_channel.c
+  src/com/data_channel_config.c
+  src/util/cJSON/cJSON.c
+  src/util/cJSON/cJSON_Utils.c
 )
-
 
 if (NOT DEFINED ENV{LIBUV_HOME})
   message(FATAL_ERROR "LIBUV_HOME not set")

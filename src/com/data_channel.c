@@ -8,10 +8,12 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#include "com/data_channel.h"
-#include "util/list.h"
 #include <string.h>
 #include <stdlib.h>
+
+#include "util/list.h"
+#include "com/data_channel.h"
+#include "com/data_channel_config.h"
 
 #define DATA_CHANNEL_SIZE (1 + 4) // id(1Byte) + Len(4Byte)
 
@@ -81,18 +83,25 @@ static void on_read(uv_udp_t* hd, ssize_t nread, const uv_buf_t* buf, const stru
   data_channel->onread(buf->base, nread);
 }
 
+
 int data_channel_init(data_channel_t* data_channel,
   const char* local_addr, int local_port, 
   const char* broard_cast_addr, int broadcast_port, int local_id)
 {
   if (data_channel == NULL)
     return -1;
+
   uv_ip4_addr(local_addr, local_port, &data_channel->local_addr);
   data_channel->local_port = local_port;
   uv_ip4_addr(broard_cast_addr, local_port, &data_channel->broadcast_addr);
   data_channel->broadcast_port = broadcast_port;
   data_channel->onread = NULL;
-  data_channel->local_id = local_id;
+  data_channel->local_id = get_config_local_id();
+
+  printf("data channel init:\n");
+  printf("local: %s :: %d\n", local_addr, local_port);
+  printf("board_cast : %s :: %d\n", broard_cast_addr, broadcast_port);
+  printf("id: %d \n", data_channel->local_id);
   return 0;
 }
 
@@ -192,6 +201,11 @@ int data_channel_test(uv_loop_t* loop)
   discover_msg = uv_buf_init(arr_buf, 1024);
   char* msg = MSG_C;
   _dc_snd.dc = &data_channel;
+
+  channel_config_t config;
+  get_channel_config(&config);
+  printf("config: %s : %d\n", config.channel_name, config.channel_id);
+
   memcpy(discover_msg.base, msg, sizeof(MSG_C));
   data_channel_init(&data_channel, "192.168.1.4", 1098, "224.1.2.244", 98, 0);
   data_channel_start(loop, &data_channel, on_read_user);

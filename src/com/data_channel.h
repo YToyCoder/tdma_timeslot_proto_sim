@@ -36,6 +36,7 @@ typedef struct __channel_head
   uint32_t  payload_len;
 } data_channel_head_t;
 
+
 int data_channel_init(data_channel_t* data_channel,
   const char* local_addr, int local_port, 
   const char* broard_cast_addr, int broadcast_port, int local_id);
@@ -48,4 +49,4 @@ int data_channel_start(uv_loop_t* loop,data_channel_t*, on_channel_read channel_
 
 int data_channel_test(uv_loop_t* loop);
 
-#endif
+#endif // __data_channel_head_h__
